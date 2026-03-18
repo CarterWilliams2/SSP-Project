@@ -7,16 +7,20 @@ from pypdf.errors import PdfReadError
 def validate_input_files(file1, file2):
     errors = 0
     
-    # try to open file1
+    # try to open and extract from file1
     try:
-        PdfReader(file1)
+        read1 = PdfReader(file1)
+        page1 = read1.pages[0]
+        print(page1)
     except:
         PdfReadError("Invalid first PDF file")
         errors += 1
     
-    #try to open file2
+    #try to open and extract from file2
     try:
-        PdfReader(file2)
+        read2 = PdfReader(file2)
+        page2 = read2.pages[0]
+        print(page2)
     except:
         PdfReadError("Invalid second PDF file")
         errors += 1
