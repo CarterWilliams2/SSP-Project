@@ -34,14 +34,12 @@ def validate_input_files(file1, file2):
 def construct_zero_shot_prompt(file1, file2):
     # initialize prompt
     prompt = ""
-    
     # base of prompt
-    prompt += "Please analyze the following two documents: "
+    prompt += "Please analyze the following two documents to identify key data elements: "
     # add file names
     prompt += file1 + " and " + file2 + ". "
     # specify output structure
     prompt += "Structure your output as a nested dictionary with the following structure: "
     prompt += "{element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]}}}}"
-    
     
     return prompt
