@@ -43,3 +43,11 @@ def construct_zero_shot_prompt(file1, file2):
     prompt += "{element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }"
     
     return prompt
+
+def construct_few_shot_prompt(file1, file2):
+    # initialize prompt with zero shot as base
+    prompt = construct_zero_shot_prompt(file1, file2)
+    
+    # make it few shot by adding examples of expected output
+    prompt += ". For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']}}"
+    prompt += ". Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}"
