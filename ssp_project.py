@@ -51,3 +51,5 @@ def construct_few_shot_prompt(file1, file2):
     # make it few shot by adding examples of expected output
     prompt += ". For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }"
     prompt += ". Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}"
+    
+    return prompt
