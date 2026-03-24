@@ -53,3 +53,18 @@ def construct_few_shot_prompt(file1, file2):
     prompt += ". Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}"
     
     return prompt
+
+def construct_chain_of_thought_prompt(file1, file2):
+    # true base
+    prompt = ""
+    
+    # give it a role
+    prompt += "You are a thorough Cybersecurity Engineer. "
+    
+    # add to prompt with few shot as base
+    prompt = construct_few_shot_prompt(file1, file2)
+    
+    # make it chain of thought by adding thinking out loud
+    prompt += ". Please think out loud as you go and detail your reasoning."
+    
+    return prompt
