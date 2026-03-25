@@ -44,6 +44,8 @@ def construct_zero_shot_prompt(file1, file2):
     
     return prompt
 
+# function to construct a few shot prompt
+# takes the files/file names as input
 def construct_few_shot_prompt(file1, file2):
     # initialize prompt with zero shot as base
     prompt = construct_zero_shot_prompt(file1, file2)
@@ -54,6 +56,8 @@ def construct_few_shot_prompt(file1, file2):
     
     return prompt
 
+# function to construct a chain of thought prompt
+# takes the files/file names as input
 def construct_chain_of_thought_prompt(file1, file2):
     # true base
     prompt = ""
