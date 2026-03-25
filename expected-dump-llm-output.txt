@@ -1,0 +1,24 @@
+*LLM Name*
+M1
+*Prompt Used*
+Prompt1
+*Prompt Type*
+Zero Shot
+*LLM Output*
+Output1
+*LLM Name*
+M1
+*Prompt Used*
+Prompt-2
+*Prompt Type*
+Few Shot
+*LLM Output*
+Output-2
+*LLM Name*
+M1
+*Prompt Used*
+PROMPT #3
+*Prompt Type*
+Chain of Thought
+*LLM Output*
+OUTPUT #3
