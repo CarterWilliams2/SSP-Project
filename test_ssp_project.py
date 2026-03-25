@@ -38,6 +38,8 @@ class TestTask1Methods(unittest.TestCase):
         outputs = ["Output1", "Output-2", "OUTPUT #3"]
         file_out_name = "test-dump-llm-output.txt"
         
+        dump_llm_output(model_name, prompts, outputs, file_out_name)
+        
         
     
     
