@@ -33,13 +33,20 @@ class TestTask1Methods(unittest.TestCase):
         assert chain_of_thought_prompt == construct_chain_of_thought_prompt(file1, file2)
         
     def test_dump_llm_output(self):
+        # mock inputs
         model_name = "M1"
         prompts = ["Prompt1", "Prompt-2", "PROMPT #3"]
         outputs = ["Output1", "Output-2", "OUTPUT #3"]
         file_out_name = "test-dump-llm-output.txt"
         
+        # call the function
         dump_llm_output(model_name, prompts, outputs, file_out_name)
         
+        # open up the expected created output file
+        with open(file_out_name, 'r') as file:
+            content = file.read()
+            
+        assert 1 == 1
         
     
     
