@@ -84,13 +84,17 @@ def dump_llm_output(model_name, prompts, outputs, file_out_name):
         # iterate through the prompts and outputs
         for i in range(len(prompt_types)):
             file.write("*LLM Name*\n")
-            file.write(model_name, "\n")
+            file.write(model_name)
+            file.write("\n")
             file.write("*Prompt Used*\n")
-            file.write(prompts[i], "\n")
+            file.write(prompts[i])
+            file.write("\n")
             file.write("*Prompt Type*\n")
-            file.write(prompt_types[i], "\n")
+            file.write(prompt_types[i]) 
+            file.write("\n")
             file.write("*LLM Output*\n")
-            file.write(outputs[i], "\n")
+            file.write(outputs[i])
+            file.write("\n")
 
     # return nothing
     return None
