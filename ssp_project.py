@@ -72,3 +72,29 @@ def construct_chain_of_thought_prompt(file1, file2):
     prompt += ". Please think out loud as you go and detail your reasoning."
     
     return prompt
+
+# function to dump the output of the models into a text file
+# takes the model name, list of prompts, list of outputs, and name of output file as input
+def dump_llm_output(model_name, prompts, outputs, file_out_name):
+    # for each file we use these three prompt types
+    prompt_types = ["Zero Shot", "Few Shot", "Chain of Thought"]
+    
+    # open up the output file
+    with open(file_out_name, 'w') as file:
+        # iterate through the prompts and outputs
+        for i in range(len(prompt_types)):
+            file.write("*LLM Name*\n")
+            file.write(model_name)
+            file.write("\n")
+            file.write("*Prompt Used*\n")
+            file.write(prompts[i])
+            file.write("\n")
+            file.write("*Prompt Type*\n")
+            file.write(prompt_types[i]) 
+            file.write("\n")
+            file.write("*LLM Output*\n")
+            file.write(outputs[i])
+            file.write("\n")
+
+    # return nothing
+    return None
