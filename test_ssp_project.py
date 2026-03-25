@@ -42,11 +42,16 @@ class TestTask1Methods(unittest.TestCase):
         # call the function
         dump_llm_output(model_name, prompts, outputs, file_out_name)
         
-        # open up the expected created output file
+        # open up the created output file
         with open(file_out_name, 'r') as file:
-            content = file.read()
-            
-        assert 1 == 1
+            content_created = file.read()
+        
+        # open up the mocked output file
+        with open("expected-dump-llm-output.txt", 'r') as file:
+            content_expected = file.read()
+        
+        # check to see if created output is equal to expected output
+        assert content_created == content_expected
         
     
     
