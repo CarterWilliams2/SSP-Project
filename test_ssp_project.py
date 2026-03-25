@@ -1,5 +1,5 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -31,6 +31,14 @@ class TestTask1Methods(unittest.TestCase):
         
         chain_of_thought_prompt = "You are a thorough Cybersecurity Engineer. Please analyze the following two documents to identify key data elements: file1.pdf and file2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}. Please think out loud as you go and detail your reasoning."
         assert chain_of_thought_prompt == construct_chain_of_thought_prompt(file1, file2)
+        
+    def test_dump_llm_output(self):
+        model_name = "M1"
+        prompts = ["Prompt1", "Prompt-2", "PROMPT #3"]
+        outputs = ["Output1", "Output-2", "OUTPUT #3"]
+        file_out_name = "test-dump-llm-output.txt"
+        
+        
     
     
 if __name__ == '__main__':
