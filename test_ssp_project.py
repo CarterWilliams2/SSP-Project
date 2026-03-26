@@ -53,8 +53,7 @@ class TestTask1Methods(unittest.TestCase):
         # check to see if created output is equal to expected output
         assert content_created == content_expected
         
-    
-
+        
 class TestTask2Methods(unittest.TestCase):    
     def test_yaml_to_dict(self):
         # mock inputs
