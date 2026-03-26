@@ -1,5 +1,5 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -37,7 +37,7 @@ class TestTask1Methods(unittest.TestCase):
         model_name = "M1"
         prompts = ["Prompt1", "Prompt-2", "PROMPT #3"]
         outputs = ["Output1", "Output-2", "OUTPUT #3"]
-        file_out_name = "test-dump-llm-output.txt"
+        file_out_name = "./test-files/test-dump-llm-output.txt"
         
         # call the function
         dump_llm_output(model_name, prompts, outputs, file_out_name)
@@ -47,13 +47,24 @@ class TestTask1Methods(unittest.TestCase):
             content_created = file.read()
         
         # open up the mocked output file
-        with open("expected-dump-llm-output.txt", 'r') as file:
+        with open("./test-files/expected-dump-llm-output.txt", 'r') as file:
             content_expected = file.read()
         
         # check to see if created output is equal to expected output
         assert content_created == content_expected
         
-    
+        
+class TestTask2Methods(unittest.TestCase):    
+    def test_yaml_to_dict(self):
+        # mock inputs
+        file1 = "./test-files/test1.yaml"
+        file2 = "./test-files/test2.yaml"
+        
+        # call the function
+        dict1, dict2 = yaml_to_dict(file1, file2)
+        
+        # make sure there was no error loading in the files
+        assert dict1 is not None and dict2 is not None
     
 if __name__ == '__main__':
     unittest.main()

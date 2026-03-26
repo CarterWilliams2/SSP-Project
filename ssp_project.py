@@ -1,6 +1,7 @@
 # Main file for our project
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
+import yaml
 
 # input validation function
 # takes two pdfs and applies adequate input validation measures
@@ -98,3 +99,27 @@ def dump_llm_output(model_name, prompts, outputs, file_out_name):
 
     # return nothing
     return None
+
+# function that automatically takes the two output files from task 1 as input
+# turns them into dictionaries to make next two functions easier
+def yaml_to_dict(file1, file2):
+    # initialize dicts
+    dict1 = None
+    dict2 = None
+    
+    # try to open the first file and turn to dict
+    try:
+        with open(file1, 'r') as yaml1:
+            dict1 = yaml.safe_load(yaml1)
+    except:
+        print('Error opening the first file')
+        
+    # try to open the second file and turn to dict
+    try:
+        with open(file2, 'r') as yaml2:
+            dict2 = yaml.safe_load(yaml2)
+    except:
+        print('Error opening the second file')
+        
+    # return the two dicts
+    return dict1, dict2

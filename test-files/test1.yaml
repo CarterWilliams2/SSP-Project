@@ -1,0 +1,12 @@
+element1:
+  name: Title
+  requirements:
+  - short
+  - sweet
+
+element2:
+  name: Closing
+  requirements:
+  - descriptive
+  - signature
+  - date
