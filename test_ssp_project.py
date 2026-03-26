@@ -37,7 +37,7 @@ class TestTask1Methods(unittest.TestCase):
         model_name = "M1"
         prompts = ["Prompt1", "Prompt-2", "PROMPT #3"]
         outputs = ["Output1", "Output-2", "OUTPUT #3"]
-        file_out_name = "test-dump-llm-output.txt"
+        file_out_name = "./test-files/test-dump-llm-output.txt"
         
         # call the function
         dump_llm_output(model_name, prompts, outputs, file_out_name)
@@ -47,12 +47,15 @@ class TestTask1Methods(unittest.TestCase):
             content_created = file.read()
         
         # open up the mocked output file
-        with open("expected-dump-llm-output.txt", 'r') as file:
+        with open("./test-files/expected-dump-llm-output.txt", 'r') as file:
             content_expected = file.read()
         
         # check to see if created output is equal to expected output
         assert content_created == content_expected
         
+    
+
+class TestTask2Methods(unittest.TestCase):    
     def test_yaml_to_dict(self):
         # mock inputs
         file1 = "./test-files/test1.yaml"
