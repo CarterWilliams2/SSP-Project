@@ -58,8 +58,11 @@ class TestTask1Methods(unittest.TestCase):
         file1 = "./test-files/test1.yaml"
         file2 = "./test-files/test2.yaml"
         
+        # call the function
+        dict1, dict2 = yaml_to_dict(file1, file2)
         
-        assert 1 == 1
+        # make sure there was no error loading in the files
+        assert dict1 is not None and dict2 is not None
     
 if __name__ == '__main__':
     unittest.main()
