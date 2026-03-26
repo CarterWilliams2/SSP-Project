@@ -120,5 +120,6 @@ def yaml_to_dict(file1, file2):
             dict2 = yaml.safe_load(yaml2)
     except:
         print('Error opening the second file')
+        
     # return the two dicts
     return dict1, dict2
