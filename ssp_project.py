@@ -1,6 +1,7 @@
 # Main file for our project
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
+import yaml
 
 # input validation function
 # takes two pdfs and applies adequate input validation measures
