@@ -54,6 +54,10 @@ class TestTask1Methods(unittest.TestCase):
         assert content_created == content_expected
         
     def test_yaml_to_dict(self):
+        # mock inputs
+        file1 = "./test-files/test1.yaml"
+        file2 = "./test-files/test2.yaml"
+        
         
         assert 1 == 1
     
