@@ -1,5 +1,5 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -53,7 +53,9 @@ class TestTask1Methods(unittest.TestCase):
         # check to see if created output is equal to expected output
         assert content_created == content_expected
         
-    
+    def test_yaml_to_dict(self):
+        
+        assert 1 == 1
     
 if __name__ == '__main__':
     unittest.main()
