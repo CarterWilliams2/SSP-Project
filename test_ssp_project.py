@@ -80,7 +80,8 @@ class TestTask2Methods(unittest.TestCase):
         
         # open the test file and convert to a list
         with open(output_path, 'r') as file:
-            actual = file.readlines()
+            content = file.read()
+            actual = content.splitlines()
         
         assert expected == actual
     
