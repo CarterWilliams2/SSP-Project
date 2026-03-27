@@ -133,15 +133,14 @@ def key_data_diff(dict1, dict2, output_path):
     
     # iterate through elements of first dict and get the set of names
     for element in dict1:
-        names1.add(element['name'])
+        names1.add(dict1[element]['name'])
     
     # iterate through elements of second dict and get the set of names
     for element in dict2:
-        names2.add(element['name'])
+        names2.add(dict2[element]['name'])
     
     # check which names are one but not the other
-    different_names += names1 - names2
-    different_names += names2 - names1
+    different_names = names1.symmetric_difference(names2)
     
     # write the differences to a text file
     with open(output_path, 'w') as file:
