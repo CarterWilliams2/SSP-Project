@@ -1,5 +1,5 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict, key_data_diff
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -65,6 +65,25 @@ class TestTask2Methods(unittest.TestCase):
         
         # make sure there was no error loading in the files
         assert dict1 is not None and dict2 is not None
+    
+    def test_key_data_diff(self):
+        # mock inputs
+        dict1 = {'element1': {'name': 'title', 'requirements': ['one', 'two', 'three']}}
+        dict2 = {'element1': {'name': 'title', 'requirements': ['four', 'five']}, 'element2': {'name': 'headers', 'requirements': ['six', 'seven']}}
+        output_path = './test-files/task-two-name-diff.txt'
+        
+        # call the function
+        key_data_diff(dict1, dict2, output_path)
+        
+        # mock the expected output
+        expected = ['headers']
+        
+        # open the test file and convert to a list
+        with open(output_path, 'r') as file:
+            content = file.read()
+            actual = content.splitlines()
+        
+        assert expected == actual
     
 if __name__ == '__main__':
     unittest.main()
