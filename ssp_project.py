@@ -123,3 +123,26 @@ def yaml_to_dict(file1, file2):
         
     # return the two dicts
     return dict1, dict2
+
+# function that compares the two dicts from the yamls and reports on key data element differences
+def key_data_diff(dict1, dict2):
+    # initialize the names sets
+    names1 = set()
+    names2 = set()
+    different_names = set()
+    
+    # iterate through elements of first dict and get the set of names
+    for element in dict1:
+        names1.add(element['name'])
+    
+    # iterate through elements of second dict and get the set of names
+    for element in dict2:
+        names2.add(element['name'])
+    
+    # check which names are one but not the other
+    different_names += names1 - names2
+    different_names += names2 - names1
+    
+    
+
+    
