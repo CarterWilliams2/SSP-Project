@@ -144,5 +144,16 @@ def key_data_diff(dict1, dict2):
     different_names += names2 - names1
     
     
+    # write the differences to a text file
+    with open('./task-two-outputs', 'w') as file:
+        # only write differences if there are any
+        if len(different_names) > 0:
+            # convert to list to iterate over and write to file
+            different_names = list(different_names)
+            for name in different_names:
+                file.write(name)
+                file.write('\n')
+        else:
+            file.write('NO DIFFERENCES IN REGARDS TO ELEMENT NAMES')
 
     
