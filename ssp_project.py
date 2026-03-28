@@ -198,8 +198,8 @@ def data_requirements_diff(dict1, dict2, output_path):
         # only write differences if there are any
         if len(req_diff) > 0:
             # write differences
-            for pair in req_diff:
-                file.write(str(pair))
+            for name, req in req_diff:
+                file.write(f'{name}, {req}')
                 file.write('/n')
         else:
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
