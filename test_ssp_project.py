@@ -95,12 +95,13 @@ class TestTask2Methods(unittest.TestCase):
         data_requirements_diff(dict1, dict2, output_path)
         
         # mock the expected output
-        expected = ['title, one', 'title, two', 'title, three', 'title, four', 'title, five']
+        # I am making it a set because there is no garuanteed ordering with symmetric difference
+        expected = set(['title, one', 'title, two', 'title, three', 'title, four', 'title, five'])
         
         # open the test file and convert to a list
         with open(output_path, 'r') as file:
             content = file.read()
-            actual = content.splitlines()
+            actual = set(content.splitlines())
         
         assert expected == actual
         
