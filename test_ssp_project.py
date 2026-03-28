@@ -95,7 +95,7 @@ class TestTask2Methods(unittest.TestCase):
         data_requirements_diff(dict1, dict2, output_path)
         
         # mock the expected output
-        expected = [('title', 'one'), ('title', 'two'), ('title', 'three'), ('title', 'four'), ('title', 'five')]
+        expected = ['title, one', 'title, two', 'title, three', 'title, four', 'title, five']
         
         # open the test file and convert to a list
         with open(output_path, 'r') as file:
