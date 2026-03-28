@@ -182,10 +182,10 @@ def data_requirements_diff(dict1, dict2, output_path):
         req2 = set()
         difference_set = set()
         for element in dict1:
-            if name in dict1[element]:
+            if name == dict1[element]['name']:
                 req1 = set(dict1[element]['requirements'])
         for element in dict2:
-            if name in dict2[element]:
+            if name == dict2[element]['name']:
                 req2 = set(dict2[element]['requirements'])
         
         # find differences and add them to overall diff array
@@ -199,7 +199,7 @@ def data_requirements_diff(dict1, dict2, output_path):
         if len(req_diff) > 0:
             # write differences
             for pair in req_diff:
-                file.write(pair)
+                file.write(str(pair))
                 file.write('/n')
         else:
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
