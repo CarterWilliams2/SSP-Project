@@ -1,5 +1,5 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict, key_data_diff
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict, key_data_diff, data_requirements_diff
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -85,5 +85,27 @@ class TestTask2Methods(unittest.TestCase):
         
         assert expected == actual
     
+    def test_data_requirements_diff(self):
+        # mock inputs
+        dict1 = {'element1': {'name': 'title', 'requirements': ['one', 'two', 'three']}}
+        dict2 = {'element1': {'name': 'title', 'requirements': ['four', 'five']}, 'element2': {'name': 'headers', 'requirements': ['six', 'seven']}}
+        output_path = './test-files/task-two-req-diff.txt'
+        
+        # call the function
+        data_requirements_diff(dict1, dict2, output_path)
+        
+        # mock the expected output
+        # I am making it a set because there is no garuanteed ordering with symmetric difference
+        expected = set(['title, one', 'title, two', 'title, three', 'title, four', 'title, five'])
+        
+        # open the test file and convert to a list
+        with open(output_path, 'r') as file:
+            content = file.read()
+            actual = set(content.splitlines())
+        
+        assert expected == actual
+        
+        
+        
 if __name__ == '__main__':
     unittest.main()

@@ -155,3 +155,54 @@ def key_data_diff(dict1, dict2, output_path):
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT NAMES')
 
     return None
+
+# function that compares the two dicts from the yaml and reports on key data requirement differences
+def data_requirements_diff(dict1, dict2, output_path):
+    # initialize the sets of names and requirement difference array
+    names1 = set()
+    names2 = set()
+    common_names = set()
+    req_diff = []
+    
+    # iterate through elements of first dict and get the set of names
+    for element in dict1:
+        names1.add(dict1[element]['name'])
+    
+    # iterate through elements of second dict and get the set of names
+    for element in dict2:
+        names2.add(dict2[element]['name'])
+    
+    # get the names that are in both dicts
+    common_names = names1.intersection(names2)
+    
+    # get the differences in requirements
+    for name in common_names:
+        # initialize the requirements of each as a set
+        req1 = set()
+        req2 = set()
+        difference_set = set()
+        for element in dict1:
+            if name == dict1[element]['name']:
+                req1 = set(dict1[element]['requirements'])
+        for element in dict2:
+            if name == dict2[element]['name']:
+                req2 = set(dict2[element]['requirements'])
+        
+        # find differences and add them to overall diff array
+        difference_set = req1.symmetric_difference(req2)
+        for diff in list(difference_set):
+            req_diff.append(tuple([name, diff]))
+    
+    # write to the file
+    with open(output_path, 'w') as file:
+        # only write differences if there are any
+        if len(req_diff) > 0:
+            # write differences
+            for name, req in req_diff:
+                file.write(f'{name}, {req}')
+                file.write('\n')
+        else:
+            file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
+    
+    
+    return None
