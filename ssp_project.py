@@ -200,7 +200,7 @@ def data_requirements_diff(dict1, dict2, output_path):
             # write differences
             for name, req in req_diff:
                 file.write(f'{name}, {req}')
-                file.write('/n')
+                file.write('\n')
         else:
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
     
