@@ -207,16 +207,16 @@ def data_requirements_diff(dict1, dict2, output_path):
     return None
 
 # function that takes two text files from task 2 as input
-# turns it into a set for comparison purposes
+# returns the content as strings
 def task_three_input_function(file1, file2):
     # open the first file and turn into set
     with open(file1, 'r') as file:
         content1 = file.read()
-        set1 = set(content1.splitlines())
+        
         
     # open the second file and turn into set
     with open(file2, 'r') as file:
         content2 = file.read()
-        set2 = set(content2.splitlines())
+        
     
-    return set1, set2
+    return content1, content2
