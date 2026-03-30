@@ -111,7 +111,14 @@ class TestTask3Methods(unittest.TestCase):
         file1 = './test-files/task-3-input1.txt'
         file2 = './test-files/task-3-input2.txt'
         
-        assert 1 == 1
+        # call the function
+        actual1, actual2 = task_three_input_function(file1, file2)
+        
+        # mock outputs
+        expected1 = "title\nclosing"
+        expected2 = "title, length"
+        
+        assert actual1 == expected1 and actual2 == expected2
         
         
         
