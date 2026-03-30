@@ -204,5 +204,19 @@ def data_requirements_diff(dict1, dict2, output_path):
         else:
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
     
-    
     return None
+
+# function that takes two text files from task 2 as input
+# returns the content as strings
+def task_three_input_function(file1, file2):
+    # open the first file and turn into set
+    with open(file1, 'r') as file:
+        content1 = file.read()
+        
+        
+    # open the second file and turn into set
+    with open(file2, 'r') as file:
+        content2 = file.read()
+        
+    
+    return content1, content2

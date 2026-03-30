@@ -1,5 +1,5 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict, key_data_diff, data_requirements_diff
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict, key_data_diff, data_requirements_diff, task_three_input_function
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -104,6 +104,21 @@ class TestTask2Methods(unittest.TestCase):
             actual = set(content.splitlines())
         
         assert expected == actual
+
+class TestTask3Methods(unittest.TestCase):
+    def test_task_three_input_function(self):
+        # mock inputs
+        file1 = './test-files/task-3-input1.txt'
+        file2 = './test-files/task-3-input2.txt'
+        
+        # call the function
+        actual1, actual2 = task_three_input_function(file1, file2)
+        
+        # mock outputs
+        expected1 = "title\nclosing"
+        expected2 = "title, length"
+        
+        assert actual1 == expected1 and actual2 == expected2
         
         
         
