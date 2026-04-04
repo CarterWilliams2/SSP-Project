@@ -1,0 +1,36 @@
+AI Usage Declaration
+SSP-Project - COMP 5700
+Team: Carter Williams, Sathvik Prahadeeswaran
+
+Throughout this project I used AI as a supplemental tool to help me move faster on
+parts I already understood. The core design decisions, architecture, and logic for
+all three tasks were my own. I planned out the function structures, decided how the
+data should flow between tasks, and wrote the majority of the code myself.
+
+For Task 1, I designed the prompt engineering strategy and wrote the zero-shot,
+few-shot, and chain-of-thought prompt functions on my own. I also set up the input
+validation and the dump_llm_output function independently. Where I used AI was in
+getting the Hugging Face pipeline syntax right for the Gemma model, since I had not
+worked with that specific library before. I also asked AI to help me figure out the
+best pages of the PDF to extract content from so the model would get meaningful
+security content instead of boilerplate pages.
+
+For Task 2, I wrote all three functions myself. The logic for comparing YAML files
+using set operations and symmetric difference was something I worked through on my
+own. AI did not contribute meaningfully to Task 2.
+
+For Task 3, I had a solid understanding of what the functions needed to do but used
+AI to help me understand the Kubescape CLI syntax and the structure of its JSON
+output. Once I understood the output format I wrote the parsing logic and the
+DataFrame construction myself. The keyword to control ID mapping was something I
+put together based on my own knowledge of Kubernetes security concepts from the
+course. AI helped me verify that the control IDs I chose were valid ones in
+Kubescape.
+
+For testing, I wrote the test cases myself. I used AI to help me understand how to
+use unittest.mock to inject a fake pipeline into the run_llm_on_documents function
+so that the tests would not need to load a 1B parameter model every time they ran.
+
+Overall AI was useful as a reference tool, similar to how I might use documentation
+or Stack Overflow. I drove all the major decisions in this project and used AI to
+fill in gaps in my knowledge of specific libraries and tools.
