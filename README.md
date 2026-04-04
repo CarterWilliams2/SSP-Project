@@ -1,11 +1,9 @@
 # SSP-Project
-COMP 5700 - Secure Software Project
+COMP 5700 Secure Software Project
 
 ## Team Members
-| Name | Email |
-|---|---|
-| Carter Williams | cjw0113@auburn.edu |
-| Sathvik Prahadeeswaran | srp0061@auburn.edu |
+| Carter Williams | cjw0113@auburn.edu | 904246901 
+| Sathvik Prahadeeswaran | srp0061@auburn.edu | 904226136
 
 ## LLM Used (Task 1)
 **google/gemma-3-1b-it** via Hugging Face Transformers
