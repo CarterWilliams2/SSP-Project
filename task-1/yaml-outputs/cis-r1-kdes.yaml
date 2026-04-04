@@ -1,0 +1,45 @@
+element1:
+  name: Acknowledgements
+  requirements:
+  - This Benchmark exemplifies the great things a community of users, vendors, and
+    subject matter experts can accomplish through consensus collaboration.
+  - ? The CIS community thanks the entire consensus team with special recognition
+      to the following individuals who contributed greatly to the creation of this
+      guide
+    : - Paavan Mistry and Randall Mowen with special thanks to contributors: James
+          Stocks, Daniel Burns, Rory McCune and Joe Bowbeer
+      - Hadas Yadayi Rory McCune Maya Gab Nick Gibbon
+element2:
+  name: Recommendations
+  requirements:
+  - Control Plane Components Security is a shared responsibility between AWS and the
+    Amazon EKS customer.
+  - The shared responsibility model describes this as security of the cloud and security in the cloud:
+    - "Security of the cloud \u2013 AWS is responsible for protecting the infrastructure\
+      \ that runs AWS services in the AWS Cloud."
+    - For Amazon EKS, AWS is responsible for the Kubernetes control plane, which includes
+      the control plane nodes and etcd database.
+    - Third-party auditors regularly test and verify the effectiveness of our security
+      as part of the AWS compliance programs.
+    - To learn about the compliance programs that apply to Amazon EKS, see AWS Services
+      in Scope by Compliance Program.
+    - "Security in the cloud \u2013 Your responsibility includes the following areas":
+      - The security configuration of the data plane, including the configuration
+        of the security groups that allow traffic to pass from the Amazon EKS control
+        plane into the customer VPC.
+      - The configuration of the worker nodes and the containers themselves.
+      - The worker node guest operating system (including updates and security patches).
+      - Amazon EKS follows the shared responsibility model for CVEs and security patches
+        on managed node groups.
+      - Because managed nodes run the Amazon EKS-optimized AMIs, Amazon EKS is responsible
+        for building patched versions of these AMIs when bugs or issues are reported
+        and we are able to publish a fix. However, customers are responsible for deploying
+        these patched AMI versions to your managed node groups.
+      - Other associated application software:
+        - Setting up and managing network controls, such as firewall rules
+        - Managing platform-level identity and access management, either with or in
+          addition to IAM
+      - "The sensitivity of your data, your company\u2019s requirements, and applicable\
+        \ laws and regulations."
+    - AWS is responsible for securing the control plane, though you might be able
+      to

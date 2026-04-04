@@ -2,6 +2,8 @@
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 import yaml
+import os
+import re
 
 # input validation function
 # takes two pdfs and applies adequate input validation measures
@@ -205,6 +207,112 @@ def data_requirements_diff(dict1, dict2, output_path):
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
     
     return None
+
+# function that uses Gemma-3-1B LLM with each prompt type to extract KDEs from two PDFs
+# saves a YAML file per document and returns (prompts, outputs, yaml1_path, yaml2_path)
+# _pipe is injectable for testing — if None, loads the real Gemma model
+def run_llm_on_documents(file1, file2, output_dir='.', _pipe=None):
+    if _pipe is None:
+        from transformers import pipeline as hf_pipeline
+        import torch
+        _pipe = hf_pipeline(
+            "text-generation",
+            model="google/gemma-3-1b-it",
+            device="cpu",
+            torch_dtype=torch.bfloat16
+        )
+
+    # extract up to 3000 chars from the Recommendation Definitions section (index 11)
+    def extract_pdf_text(pdf_path, start_page=11, max_chars=3000):
+        reader = PdfReader(pdf_path)
+        text = ""
+        for page in reader.pages[start_page:start_page + 6]:
+            text += page.extract_text() or ""
+            if len(text) >= max_chars:
+                break
+        return text[:max_chars]
+
+    # call the LLM and return the assistant response string
+    def call_llm(prompt_text):
+        messages = [{"role": "user", "content": prompt_text}]
+        result = _pipe(messages, max_new_tokens=512)
+        return result[0]['generated_text'][-1]['content']
+
+    # try to turn raw LLM output into a nested dict matching the KDE schema
+    def parse_to_dict(output_text):
+        # prefer a fenced YAML block
+        match = re.search(r'```(?:yaml)?\n(.*?)```', output_text, re.DOTALL | re.IGNORECASE)
+        if match:
+            try:
+                parsed = yaml.safe_load(match.group(1))
+                if isinstance(parsed, dict):
+                    return parsed
+            except Exception:
+                pass
+
+        # fall back to the first element\d+: block we can find
+        match = re.search(r'(element\d[\s\S]*)', output_text)
+        if match:
+            try:
+                parsed = yaml.safe_load(match.group(1))
+                if isinstance(parsed, dict):
+                    return parsed
+            except Exception:
+                pass
+
+        # last resort: return a minimal valid structure
+        return {'element1': {'name': 'Unknown', 'requirements': ['Could not parse LLM output']}}
+
+    text1 = extract_pdf_text(file1)
+    text2 = extract_pdf_text(file2)
+    combined = f"Document 1 ({file1}):\n{text1}\n\nDocument 2 ({file2}):\n{text2}"
+
+    # build all three prompts and collect raw LLM outputs (used for dump_llm_output)
+    zero_shot = construct_zero_shot_prompt(file1, file2)
+    few_shot = construct_few_shot_prompt(file1, file2)
+    chain_of_thought = construct_chain_of_thought_prompt(file1, file2)
+    prompts = [zero_shot, few_shot, chain_of_thought]
+
+    outputs = []
+    for prompt in prompts:
+        outputs.append(call_llm(prompt + "\n\nDocument content:\n" + combined))
+
+    # extract KDEs for each document individually using a YAML-focused prompt
+    def extract_kdes(doc_text, doc_name):
+        extraction_prompt = (
+            "You are a thorough Cybersecurity Engineer. "
+            "Analyze the following document and identify its key data elements. "
+            "Output ONLY valid YAML using this exact structure:\n"
+            "element1:\n  name: <element name>\n  requirements:\n    - <req1>\n    - <req2>\n"
+            "element2:\n  name: <element name>\n  requirements:\n    - <req1>\n\n"
+            f"Document ({doc_name}):\n{doc_text}"
+        )
+        return parse_to_dict(call_llm(extraction_prompt))
+
+    dict1 = extract_kdes(text1, file1)
+    dict2 = extract_kdes(text2, file2)
+
+    # derive YAML file names from input PDF names
+    def yaml_path(pdf_path, suffix=''):
+        base = os.path.splitext(os.path.basename(pdf_path))[0]
+        return os.path.join(output_dir, f"{base}{suffix}-kdes.yaml")
+
+    yaml1_path = yaml_path(file1)
+    yaml2_path = yaml_path(file2)
+
+    # when both files are the same, distinguish the outputs with -1 / -2
+    if yaml1_path == yaml2_path:
+        yaml1_path = yaml_path(file1, '-1')
+        yaml2_path = yaml_path(file2, '-2')
+
+    with open(yaml1_path, 'w') as f:
+        yaml.dump(dict1, f, default_flow_style=False)
+
+    with open(yaml2_path, 'w') as f:
+        yaml.dump(dict2, f, default_flow_style=False)
+
+    return prompts, outputs, yaml1_path, yaml2_path
+
 
 # function that takes two text files from task 2 as input
 # returns the content as strings
