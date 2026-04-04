@@ -1,0 +1,214 @@
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r1.pdf and ./pdf-inputs/cis-r2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }
+*Prompt Type*
+Zero Shot
+*LLM Output*
+```python
+import json
+
+def analyze_documents(pdf_inputs_path, cis_r1_path, cis_r2_path):
+    """
+    Analyzes two PDF documents to extract key data elements.
+
+    Args:
+        pdf_inputs_path (str): Path to the first PDF document.
+        cis_r1_path (str): Path to the second PDF document.
+        cis_r2_path (str): Path to the third PDF document.
+
+    Returns:
+        dict: A nested dictionary containing the extracted data elements.
+    """
+
+    data = {
+        "cis_r1": {},
+        "cis_r2": {},
+    }
+
+    # Load documents from files
+    with open(pdf_inputs_path, 'r') as f:
+        doc1_content = f.read()
+    with open(cis_r1_path, 'r') as f:
+        doc1_content = doc1_content.splitlines()  # Split into lines
+    with open(cis_r2_path, 'r') as f:
+        doc2_content = f.read()
+    with open(cis_r2_path, 'r') as f:
+        doc2_content = doc2_content.splitlines()
+
+
+    # Process doc1 content
+    for line in doc1_content.splitlines():
+        if "Page" in line:
+            try:
+                page_number = int(line.split("Page ")[1])
+                data["cis_r1"][f"page_{page_number}"] = {
+                    "name": line.split("  ")[0],
+                    "requirements": [
+                        "Control Plane Components",
+                        "Security",
+                        "Configuration",
+                        "Logging",
+                    ],
+                }
+            except:
+                print(f"Skipping line due to parsing error: {line}")
+
+    # Process doc2 content
+    for line in doc2_content.splitlines():
+        if "Page" in line:
+            try:
+                page_number = int(line.split("Page ")[1])
+                data["cis_r2"][f"page_{page_number}"] = {
+                    "name": line.split("  ")[0],
+                    "requirements": [
+                        "Control
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r1.pdf and ./pdf-inputs/cis-r2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}
+*Prompt Type*
+Few Shot
+*LLM Output*
+```python
+import json
+
+def analyze_documents(pdf_inputs_path, doc1_path, doc2_path):
+    """
+    Analyzes two PDF documents containing CIS recommendations and extracts key data elements.
+
+    Args:
+        pdf_inputs_path (str): Path to the first PDF document.
+        doc1_path (str): Path to the first PDF document.
+        doc2_path (str): Path to the second PDF document.
+
+    Returns:
+        dict: A nested dictionary containing the extracted data elements.
+    """
+
+    data = {}
+
+    # Process Document 1
+    try:
+        with open(pdf_inputs_path, 'r') as f:
+            doc1_content = f.read()
+        
+        # Simple parsing - assumes a consistent structure for the document
+        lines = doc1_content.splitlines()
+        for line in lines:
+            if "Page" in line:
+                parts = line.split("Page ")
+                if len(parts) > 1:
+                    page_number = int(parts[1].split(" ")[0])
+                    
+                    # Extract key elements
+                    element = {
+                        "title": line.split(" ")[0],
+                        "requirements": [
+                            "human-readable",
+                            "descriptive"
+                        ]
+                    }
+                    data[f"element1"] = element
+                    
+    except FileNotFoundError:
+        print(f"Error: File not found: {pdf_inputs_path}")
+        return None
+    except Exception as e:
+        print(f"Error processing Document 1: {e}")
+        return None
+
+    # Process Document 2
+    try:
+        with open(pdf_inputs_path, 'r') as f:
+            doc2_content = f.read()
+        
+        # Simple parsing - assumes a consistent structure for the document
+        lines = doc2_content.splitlines()
+        for line in lines:
+            if "Internal Only - General" in line:
+                # Extract key elements
+                element = {
+                    "title": line.split(" ")[0],
+                    "assessment_status": "Automated"
+                }
+                data[f"element2"] = element
+    except FileNotFoundError:
+        print(f"Error: File not found
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+You are a thorough Cybersecurity Engineer. Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r1.pdf and ./pdf-inputs/cis-r2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}. Please think out loud as you go and detail your reasoning.
+*Prompt Type*
+Chain of Thought
+*LLM Output*
+```python
+import json
+
+def analyze_documents(pdf_inputs_path):
+    """
+    Analyzes two documents to extract key data elements and structure them in a nested dictionary.
+
+    Args:
+        pdf_inputs_path (str): The path to the PDF files.
+
+    Returns:
+        dict: A nested dictionary containing the extracted data elements.
+    """
+
+    documents = {
+        "cis_r1": {},
+        "cis_r2": {}
+    }
+
+    try:
+        with open(pdf_inputs_path, 'r') as f:
+            doc1 = json.load(f)
+            doc2 = json.load(f)
+
+        # Analyze cis_r1
+        if "cis_r1" in doc1:
+            cis_r1_data = {
+                "title": doc1["cis_r1"]["title"],
+                "requirements": [
+                    "human-readable",
+                    "descriptive",
+                    "strategic",
+                    "technical"
+                ]
+            }
+            documents["cis_r1"] = cis_r1_data
+        else:
+            documents["cis_r1"] = {"title": "No CIS R1 document found", "requirements": []}
+
+        # Analyze cis_r2
+        if "cis_r2" in doc2:
+            cis_r2_data = {
+                "title": "No CIS R2 document found",
+                "requirements": [
+                    "technical",
+                    "operational",
+                    "automation"
+                ]
+            }
+            documents["cis_r2"] = cis_r2_data
+        else:
+            documents["cis_r2"] = {"title": "No CIS R2 document found", "requirements": []}
+
+
+    except FileNotFoundError:
+        print(f"Error: File not found at {pdf_inputs_path}")
+        return None
+    except json.JSONDecodeError:
+        print(f"Error: Invalid JSON format in {pdf_inputs_path}")
+        return None
+
+    return documents
+
+
+# Example Usage:
+pdf_inputs_path = "./pdf-inputs/cis-r1.pdf"
+results = analyze_documents(pdf_inputs_path)
+
+if results:
+    print(json.dumps(results, indent=4

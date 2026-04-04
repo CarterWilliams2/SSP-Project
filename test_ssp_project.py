@@ -1,5 +1,6 @@
 import unittest
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, yaml_to_dict, key_data_diff, data_requirements_diff, task_three_input_function
+import os
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, run_llm_on_documents, yaml_to_dict, key_data_diff, data_requirements_diff, task_three_input_function
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -32,6 +33,34 @@ class TestTask1Methods(unittest.TestCase):
         chain_of_thought_prompt = "You are a thorough Cybersecurity Engineer. Please analyze the following two documents to identify key data elements: file1.pdf and file2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}. Please think out loud as you go and detail your reasoning."
         assert chain_of_thought_prompt == construct_chain_of_thought_prompt(file1, file2)
         
+    def test_run_llm_on_documents(self):
+        # mock pipe returns a minimal YAML structure without loading the real model
+        yaml_response = (
+            "element1:\n"
+            "  name: Title\n"
+            "  requirements:\n"
+            "    - descriptive\n"
+            "    - concise\n"
+        )
+
+        def mock_pipe(messages, max_new_tokens=512):
+            return [{'generated_text': messages + [{'role': 'assistant', 'content': yaml_response}]}]
+
+        file1 = "./pdf-inputs/cis-r1.pdf"
+        file2 = "./pdf-inputs/cis-r2.pdf"
+
+        prompts, outputs, yaml1, yaml2 = run_llm_on_documents(
+            file1, file2, output_dir="./test-files", _pipe=mock_pipe
+        )
+
+        assert len(prompts) == 3
+        assert len(outputs) == 3
+        assert yaml1.endswith(".yaml")
+        assert yaml2.endswith(".yaml")
+        assert yaml1 != yaml2
+        assert os.path.exists(yaml1)
+        assert os.path.exists(yaml2)
+
     def test_dump_llm_output(self):
         # mock inputs
         model_name = "M1"

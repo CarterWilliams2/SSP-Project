@@ -1,0 +1,6 @@
+element1:
+  name: "CIS Critical Security Controls\xAE"
+  requirements:
+  - CIS Control: 5.1 - Establish Secure Configurations
+    req1: Automated
+    req2: Manual
