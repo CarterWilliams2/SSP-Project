@@ -1,0 +1,2 @@
+This a dummy file to edit and test out or git commit hook.
+Feel free to add any text in this file and commit it.
