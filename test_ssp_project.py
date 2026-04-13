@@ -68,8 +68,6 @@ class TestTask2Methods(unittest.TestCase):
     
     def test_key_data_diff(self):
         # mock inputs
-        # {{name: kde1, req: [req1, req2, req3]}, {name: kde2, req: [req4, req5]}} 
-        # {{name: kde1, req: [req1, req2]}, {name: kde3, req: [req6, req7]}}
         dict1 = {'element1': {'name': 'kde1', 'requirements': ['req1', 'req2', 'req3']}, 'element2': {'name': 'kde2', 'req': ['req4', 'req5']}}
         dict2 = {'element1': {'name': 'kde1', 'requirements': ['req1', 'req2']}, 'element2': {'name': 'kde3', 'requirements': ['req6', 'req7']}}
         output_path = './test-files/task-two-name-diff.txt'
