@@ -1,5 +1,3 @@
-title, three
-title, two
-title, one
-title, four
-title, five
+kde2,ABSENT-IN-file2,PRESENT-IN-file1,NA
+kde3,ABSENT-IN-file1,PRESENT-IN-file2,NA
+kde1,ABSENT-IN-file2,PRESENT-IN-file1,req3

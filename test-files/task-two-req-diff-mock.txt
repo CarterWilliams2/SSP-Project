@@ -1,0 +1,3 @@
+kde3,ABSENT-IN-file1,PRESENT-IN-file2,NA
+kde2,ABSENT-IN-file2,PRESENT-IN-file1,NA
+kde1,ABSENT-IN-file2,PRESENT-IN-file1,req3
