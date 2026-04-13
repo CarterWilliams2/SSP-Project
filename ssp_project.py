@@ -157,7 +157,7 @@ def key_data_diff(dict1, dict2, output_path):
     return None
 
 # function that compares the two dicts from the yaml and reports on key data requirement differences
-def data_requirements_diff(dict1, dict2, output_path):
+def data_requirements_diff(dict1, dict2, output_path, file1, file2):
     # initialize the sets of names and requirement difference array
     names1 = set()
     names2 = set()
