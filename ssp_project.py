@@ -180,13 +180,13 @@ def data_requirements_diff(dict1, dict2, output_path, file1, file2):
     for name in names1:
         if name not in names2:
             # kde,PRESENT-IN-file1,ABSENT-IN-file2,NA
-            output = f'{name},PRESENT-IN-{file1},ABSENT-IN-{file2},NA'
+            output = f'{name},ABSENT-IN-{file2},PRESENT-IN-{file1},NA\n'
             with open(output_path, 'a') as file:
                 file.write(output)
     
     for name in names2:
         if name not in names1:
-            output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},NA'
+            output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},NA\n'
             with open(output_path, 'a') as file:
                 file.write(output)
     
@@ -209,14 +209,13 @@ def data_requirements_diff(dict1, dict2, output_path, file1, file2):
         # find reqs in one file but not the other
         for req in req1:
             if req not in req2:
-                # kde,PRESENT-IN-file1,ABSENT-IN-file2,NA
-                output = f'{name},PRESENT-IN-{file1},ABSENT-IN-{file2},{req}'
+                output = f'{name},ABSENT-IN-{file2},PRESENT-IN-{file1},{req}\n'
                 with open(output_path, 'a') as file:
                     file.write(output)
         
         for req in req2:
             if req not in req1:
-                output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},{req}'
+                output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},{req}\n'
                 with open(output_path, 'a') as file:
                     file.write(output)
     

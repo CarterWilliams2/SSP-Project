@@ -68,8 +68,8 @@ class TestTask2Methods(unittest.TestCase):
     
     def test_key_data_diff(self):
         # mock inputs
-        dict1 = {'element1': {'name': 'kde1', 'requirements': ['req1', 'req2', 'req3']}, 'element2': {'name': 'kde2', 'req': ['req4', 'req5']}}
-        dict2 = {'element1': {'name': 'kde1', 'requirements': ['req1', 'req2']}, 'element2': {'name': 'kde3', 'requirements': ['req6', 'req7']}}
+        dict1 = {'element1': {'name': 'title', 'requirements': ['one', 'two', 'three']}}
+        dict2 = {'element1': {'name': 'title', 'requirements': ['four', 'five']}, 'element2': {'name': 'headers', 'requirements': ['six', 'seven']}}
         output_path = './test-files/task-two-name-diff.txt'
         
         # call the function
@@ -98,8 +98,10 @@ class TestTask2Methods(unittest.TestCase):
         
         # mock the expected output
         # I am making it a set because there is no garuanteed ordering with symmetric difference
-        expected = set(['title, one', 'title, two', 'title, three', 'title, four', 'title, five'])
-        
+        with open('./test-files/task-two-req-diff-mock.txt', 'r') as file:
+            content = file.read()
+            expected = set(content.splitlines())
+            
         # open the test file and convert to a list
         with open(output_path, 'r') as file:
             content = file.read()
