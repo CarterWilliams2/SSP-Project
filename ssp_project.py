@@ -164,6 +164,10 @@ def data_requirements_diff(dict1, dict2, output_path, file1, file2):
     common_names = set()
     req_diff = []
     
+    # reset output file
+    with open(output_path, 'w') as file:
+        pass
+    
     # iterate through elements of first dict and get the set of names
     for element in dict1:
         names1.add(dict1[element]['name'])
@@ -171,6 +175,20 @@ def data_requirements_diff(dict1, dict2, output_path, file1, file2):
     # iterate through elements of second dict and get the set of names
     for element in dict2:
         names2.add(dict2[element]['name'])
+    
+    # find kdes in one file but not the other
+    for name in names1:
+        if name not in names2:
+            # kde,PRESENT-IN-file1,ABSENT-IN-file2,NA
+            output = f'{name},PRESENT-IN-{file1},ABSENT-IN-{file2},NA'
+            with open(output_path, 'a') as file:
+                file.write(output)
+    
+    for name in names2:
+        if name not in names1:
+            output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},NA'
+            with open(output_path, 'a') as file:
+                file.write(output)
     
     # get the names that are in both dicts
     common_names = names1.intersection(names2)
@@ -188,20 +206,26 @@ def data_requirements_diff(dict1, dict2, output_path, file1, file2):
             if name == dict2[element]['name']:
                 req2 = set(dict2[element]['requirements'])
         
-        # find differences and add them to overall diff array
-        difference_set = req1.symmetric_difference(req2)
-        for diff in list(difference_set):
-            req_diff.append(tuple([name, diff]))
+        # find reqs in one file but not the other
+        for req in req1:
+            if req not in req2:
+                # kde,PRESENT-IN-file1,ABSENT-IN-file2,NA
+                output = f'{name},PRESENT-IN-{file1},ABSENT-IN-{file2},{req}'
+                with open(output_path, 'a') as file:
+                    file.write(output)
+        
+        for req in req2:
+            if req not in req1:
+                output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},{req}'
+                with open(output_path, 'a') as file:
+                    file.write(output)
     
-    # write to the file
-    with open(output_path, 'w') as file:
-        # only write differences if there are any
-        if len(req_diff) > 0:
-            # write differences
-            for name, req in req_diff:
-                file.write(f'{name}, {req}')
-                file.write('\n')
-        else:
+    
+    
+    # test if output file is empty
+    with open(output_path, 'r') as file:
+        content = file.read()
+        if not content:
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
     
     return None
