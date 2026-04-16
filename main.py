@@ -7,6 +7,7 @@ Usage:
 """
 import sys
 import os
+import multiprocessing
 from ssp_project import (
     validate_input_files,
     run_llm_on_documents,
@@ -96,4 +97,5 @@ def main():
 
 
 if __name__ == "__main__":
+    multiprocessing.freeze_support()
     main()
