@@ -24,3 +24,4 @@ pytest test_ssp_project.py -v
 ```bash
 ./ssp_project_binary <file1.pdf> <file2.pdf>
 ```
+Note: `project-yamls.zip` must be in the same directory as the binary for the Kubescape scan (Task 3) to run.
