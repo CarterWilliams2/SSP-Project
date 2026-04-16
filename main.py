@@ -20,18 +20,6 @@ from ssp_project import (
     generate_csv,
 )
 
-NINE_INPUTS = [
-    ("pdf-inputs/cis-r1.pdf", "pdf-inputs/cis-r1.pdf"),
-    ("pdf-inputs/cis-r1.pdf", "pdf-inputs/cis-r2.pdf"),
-    ("pdf-inputs/cis-r1.pdf", "pdf-inputs/cis-r3.pdf"),
-    ("pdf-inputs/cis-r1.pdf", "pdf-inputs/cis-r4.pdf"),
-    ("pdf-inputs/cis-r2.pdf", "pdf-inputs/cis-r2.pdf"),
-    ("pdf-inputs/cis-r2.pdf", "pdf-inputs/cis-r3.pdf"),
-    ("pdf-inputs/cis-r2.pdf", "pdf-inputs/cis-r4.pdf"),
-    ("pdf-inputs/cis-r3.pdf", "pdf-inputs/cis-r3.pdf"),
-    ("pdf-inputs/cis-r3.pdf", "pdf-inputs/cis-r4.pdf"),
-]
-
 YAMLS_ZIP = "project-yamls.zip"
 
 
@@ -101,11 +89,10 @@ def run_pipeline(file1, file2):
 
 
 def main():
-    if len(sys.argv) == 3:
-        run_pipeline(sys.argv[1], sys.argv[2])
-    else:
-        for file1, file2 in NINE_INPUTS:
-            run_pipeline(file1, file2)
+    if len(sys.argv) != 3:
+        print("Usage: ssp_project_binary <file1.pdf> <file2.pdf>")
+        sys.exit(1)
+    run_pipeline(sys.argv[1], sys.argv[2])
 
 
 if __name__ == "__main__":
