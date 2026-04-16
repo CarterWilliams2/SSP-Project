@@ -1,10 +1,6 @@
 import unittest
 import os
-import json
-import tempfile
-import zipfile
-from unittest.mock import patch, MagicMock
-from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, run_llm_on_documents, yaml_to_dict, key_data_diff, data_requirements_diff, task_three_input_function, identify_kubescape_controls, execute_kubescape, generate_csv
+from ssp_project import validate_input_files, construct_zero_shot_prompt, construct_few_shot_prompt, construct_chain_of_thought_prompt, dump_llm_output, run_llm_on_documents, yaml_to_dict, key_data_diff, data_requirements_diff, task_three_input_function
 
 
 class TestTask1Methods(unittest.TestCase):
@@ -120,26 +116,22 @@ class TestTask2Methods(unittest.TestCase):
     
     def test_data_requirements_diff(self):
         # mock inputs
-        dict1 = {'element1': {'name': 'kde1', 'requirements': ['req1', 'req2', 'req3']}, 'element2': {'name': 'kde2', 'req': ['req4', 'req5']}}
-        dict2 = {'element1': {'name': 'kde1', 'requirements': ['req1', 'req2']}, 'element2': {'name': 'kde3', 'requirements': ['req6', 'req7']}}
+        dict1 = {'element1': {'name': 'title', 'requirements': ['one', 'two', 'three']}}
+        dict2 = {'element1': {'name': 'title', 'requirements': ['four', 'five']}, 'element2': {'name': 'headers', 'requirements': ['six', 'seven']}}
         output_path = './test-files/task-two-req-diff.txt'
-        file1 = 'file1'
-        file2 = 'file2'
-
+        
         # call the function
-        data_requirements_diff(dict1, dict2, output_path, file1, file2)
-
+        data_requirements_diff(dict1, dict2, output_path)
+        
         # mock the expected output
-        # I am making it a set because there is no guaranteed ordering
-        with open('./test-files/task-two-req-diff-mock.txt', 'r') as file:
-            content = file.read()
-            expected = set(content.splitlines())
-
+        # I am making it a set because there is no garuanteed ordering with symmetric difference
+        expected = set(['title, one', 'title, two', 'title, three', 'title, four', 'title, five'])
+        
         # open the test file and convert to a list
         with open(output_path, 'r') as file:
             content = file.read()
             actual = set(content.splitlines())
-
+        
         assert expected == actual
 
 class TestTask3Methods(unittest.TestCase):
@@ -147,95 +139,15 @@ class TestTask3Methods(unittest.TestCase):
         # mock inputs
         file1 = './test-files/task-3-input1.txt'
         file2 = './test-files/task-3-input2.txt'
-
+        
         # call the function
         actual1, actual2 = task_three_input_function(file1, file2)
-
+        
         # mock outputs
         expected1 = "title\nclosing"
         expected2 = "title, length"
-
+        
         assert actual1 == expected1 and actual2 == expected2
-
-    def test_identify_kubescape_controls(self):
-        # use the real task-2 output files
-        content1, content2 = task_three_input_function(
-            './task-2/name-diff.txt',
-            './task-2/req-diff.txt'
-        )
-        output_path = './test-files/test-controls.txt'
-
-        controls = identify_kubescape_controls(content1, content2, output_path)
-
-        # name-diff has real differences so controls should not be empty
-        assert len(controls) > 0
-        with open(output_path, 'r') as f:
-            content = f.read()
-        assert content != 'NO DIFFERENCES FOUND'
-
-    def test_execute_kubescape(self):
-        import pandas as pd
-
-        # create a minimal yamls zip
-        with tempfile.NamedTemporaryFile(suffix='.zip', delete=False) as tmp:
-            zip_path = tmp.name
-        with zipfile.ZipFile(zip_path, 'w') as zf:
-            zf.writestr('pod.yaml', 'apiVersion: v1\nkind: Pod\nmetadata:\n  name: test\nspec:\n  containers:\n  - name: c\n    image: nginx\n')
-
-        # create a controls file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as tmp:
-            tmp.write('C-0013\nC-0057')
-            controls_path = tmp.name
-
-        # mock kubescape JSON output
-        mock_results = {
-            'summaryDetails': {
-                'controls': {
-                    'C-0013': {
-                        'name': 'Non-root containers',
-                        'severity': 'Medium',
-                        'complianceScore': 0,
-                        'ResourceCounters': {'failedResources': 1, 'passedResources': 0, 'skippedResources': 0}
-                    }
-                }
-            }
-        }
-
-        def mock_run(cmd, **kwargs):
-            out_idx = cmd.index('--output') + 1
-            with open(cmd[out_idx], 'w') as f:
-                json.dump(mock_results, f)
-
-        with patch('subprocess.run', side_effect=mock_run):
-            df = execute_kubescape(controls_path, zip_path)
-
-        assert isinstance(df, pd.DataFrame)
-        assert list(df.columns) == ['FilePath', 'Severity', 'Control name', 'Failed resources', 'All Resources', 'Compliance score']
-        assert len(df) == 1
-
-        os.unlink(zip_path)
-        os.unlink(controls_path)
-
-    def test_generate_csv(self):
-        import pandas as pd
-
-        df = pd.DataFrame([{
-            'FilePath': 'project-yamls.zip',
-            'Severity': 'Medium',
-            'Control name': 'Non-root containers',
-            'Failed resources': 1,
-            'All Resources': 2,
-            'Compliance score': 50.0
-        }])
-        output_path = './test-files/test-results.csv'
-
-        generate_csv(df, output_path)
-
-        assert os.path.exists(output_path)
-        with open(output_path, 'r') as f:
-            lines = f.read().splitlines()
-        assert lines[0] == 'FilePath,Severity,Control name,Failed resources,All Resources,Compliance score'
-        assert len(lines) == 2
         
         
         

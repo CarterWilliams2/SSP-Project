@@ -1,0 +1,131 @@
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r1.pdf and ./pdf-inputs/cis-r2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }
+*Prompt Type*
+Zero Shot
+*LLM Output*
+```python
+nested_data = {
+    "cis_r1": {
+        "page_11": {
+            "name": "Acknowledgements",
+            "requirements": ["Thanks"]
+        },
+        "page_12": {
+            "name": "Recommendations",
+            "requirements": ["1", "2"]
+        },
+        "page_13": {
+            "name": "Control Plane Configuration",
+            "requirements": ["2.1.1", "2.1.2", "2.1.3"]
+        },
+        "page_14": {
+            "name": "2.1.1 Enable audit Logs (Manual)",
+            "requirements": ["Profile", "Remediation"]
+        },
+        "page_15": {
+            "name": "API server: Enabled / Disabled",
+            "requirements": ["Audit"]
+        },
+        "page_16": {
+            "name": "Control Plane Logging Configuration",
+            "requirements": ["Audit"]
+        }
+    },
+    "cis_r2": {
+        "page_11": {
+            "name": "Internal Only - General",
+            "requirements": ["Recommendation Definitions"]
+        },
+        "page_12": {
+            "name": "Internal Only - General",
+            "requirements": ["Profile Definitions"]
+        },
+        "page_13": {
+            "name": "Control Plane Configuration",
+            "requirements": ["2.1.1", "2.1.2", "2.1.3"]
+        },
+        "page_14": {
+            "name": "2.1.1 Enable audit Logs (Manual)",
+            "requirements": ["Audit"]
+        },
+        "page_15": {
+            "name": "API server: Enabled / Disabled",
+            "requirements": ["Audit"]
+        },
+        "page_16": {
+            "name": "Control Plane Logging Configuration",
+            "requirements": ["Audit"]
+        }
+    }
+}
+
+print(nested_data)
+```
+
+**Explanation:**
+
+The code creates a Python dictionary `nested_data` that stores the data from the two documents.  The dictionary's keys are the document IDs ("cis_r1", "cis
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r1.pdf and ./pdf-inputs/cis-r2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}
+*Prompt Type*
+Few Shot
+*LLM Output*
+```python
+import json
+
+data = {
+    "cis_r1": {
+        "title": "Control Plane Components Security",
+        "recommendations": [
+            {
+                "name": "Security is a shared responsibility between AWS and the Amazon EKS customer.",
+                "rationale": "Audit: From Console: 1. For each EKS Cluster in each region; 2. Go to 'Amazon EKS' > 'Clusters' > 'CLUSTER_NAME' > 'Configuration' > 'Logging'. 3. This will show the control plane logging configuration: API server: Enabled / Disabled, Authenticator: Enabled, Controller manager: Enabled, Scheduler: Enabled. Ensure that all options are set to 'Enabled'. From CLI: # For each EKS Cluster in each region; aws eks describe-cluster --name '${CLUSTER_NAME}' --query 'cluster.logging.clusterLogging' --region '${REGION_CODE}' Remediation: From Console: 1. For each EKS Cluster in each region; 2. Go to 'Amazon EKS' > 'Clusters' > '' > 'Configuration' > 'Logging'. 3. Click 'Manage logging'.",
+                "profile": "Level 1 Configuration Profile",
+                "description": "Control plane logs provide visibility into operation of the EKS Control plane component systems. The API server audit logs record all accepted and rejected requests in the cluster. When enabled via EKS configuration the control plane logs for a cluster are exported to a CloudWatch Log Group for persistence. Rationale: Audit: From Console: 1. For each EKS Cluster in each region; 2. Go to 'Amazon EKS' > 'Clusters' > 'CLUSTER_NAME' > 'Configuration' > 'Logging'. 3. This will show the control plane logging configuration: API server: Enabled / Disabled, Authenticator: Enabled, Controller manager: Enabled, Scheduler: Enabled. Ensure that all options are set to 'Enabled'. From CLI: # For each EKS Cluster in each region; aws eks describe-cluster --name '${CLUSTER_NAME}' --query 'cluster.logging.clusterLogging' --region '${REGION_CODE}' Remediation: From Console: 1. For each EKS Cluster in each region; 2. Go to 'Amazon EKS' > 'Clusters' > '' > 'Configuration' > 'Logging'. 3. Click 'Manage logging'.",
+                "assessment_status": "
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+You are a thorough Cybersecurity Engineer. Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r1.pdf and ./pdf-inputs/cis-r2.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}. Please think out loud as you go and detail your reasoning.
+*Prompt Type*
+Chain of Thought
+*LLM Output*
+```python
+{
+    "element1": {
+        "name": "Control Plane Components",
+        "requirements": ["security configuration", "security in the cloud"]
+    },
+    "element2": {
+        "name": "Security is a shared responsibility between AWS and the Amazon EKS customer.",
+        "rationale": "Security of the cloud – AWS is responsible for protecting the infrastructure that runs AWS services in the AWS Cloud. For Amazon EKS, AWS is responsible for the Kubernetes control plane, which includes the control plane nodes and etcd database. Third-party auditors regularly test and verify the effectiveness of our security as part of the AWS compliance programs. To learn about the compliance programs that apply to Amazon EKS, see AWS Services in Scope by Compliance Program."
+    },
+    "element3": {
+        "name": "Security in the cloud – Your responsibility includes the following areas.",
+        "requirements": ["data sensitivity", "company requirements", "applicable laws and regulations"]
+    },
+    "element4": {
+        "name": "Security in the cloud – Your responsibility includes the following areas.",
+        "requirements": ["configuration of security groups", "configuration of worker nodes", "worker node guest operating system", "Amazon EKS follows the shared responsibility model for CVEs and security patches on managed node groups", "managed nodes run the Amazon EKS-optimized AMIs"]
+    },
+    "element5": {
+        "name": "Security in the cloud – Other associated application software.",
+        "requirements": ["setting up and managing network controls", "managing platform-level identity and access management"]
+    },
+    "element6": {
+        "name": "Security in the cloud – The sensitivity of your data, your company’s requirements, and applicable laws and regulations.",
+        "requirements": ["data sensitivity", "company requirements", "applicable laws and regulations"]
+    },
+    "element7": {
+        "name": "Security in the cloud – AWS is responsible for securing the control plane, though you might be able to configure certain options based on your requirements.",
+        "requirements": ["configuration options"]
+    },
+    "element8": {
+        "name": "Security in the cloud – Other associated application software.",
+        "requirements": ["setting up and managing network controls", "managing platform-level identity and access management"]
+    },
+    "element9":

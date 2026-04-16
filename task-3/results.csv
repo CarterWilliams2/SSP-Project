@@ -1,0 +1,8 @@
+FilePath,Severity,Control name,Failed resources,All Resources,Compliance score
+../project-yamls.zip,High,Resource limits,314,385,18.441559
+../project-yamls.zip,Medium,Non-root containers,379,385,1.5584415
+../project-yamls.zip,Medium,Allow privilege escalation,283,386,26.683939
+../project-yamls.zip,Medium,Administrative Roles,22,914,97.592995
+../project-yamls.zip,High,HostNetwork access,12,385,96.88312
+../project-yamls.zip,Medium,Cluster internal networking,31,31,0.0
+../project-yamls.zip,High,Privileged container,18,385,95.32468

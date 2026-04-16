@@ -1,0 +1,195 @@
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r3.pdf and ./pdf-inputs/cis-r4.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }
+*Prompt Type*
+Zero Shot
+*LLM Output*
+```python
+import json
+
+def analyze_documents(pdf_inputs_path):
+    """
+    Analyzes two PDF documents to extract key data elements and 
+    return a nested dictionary.
+
+    Args:
+        pdf_inputs_path (str): The path to the first PDF document.
+
+    Returns:
+        dict: A nested dictionary containing the extracted data elements.
+    """
+
+    try:
+        with open(pdf_inputs_path, 'r') as f:
+            doc1_content = f.read()
+    except FileNotFoundError:
+        print(f"Error: File not found at {pdf_inputs_path}")
+        return {}
+
+    try:
+        with open(pdf_inputs_path, 'r') as f:
+            doc2_content = f.read()
+    except FileNotFoundError:
+        print(f"Error: File not found at {pdf_inputs_path}")
+        return {}
+
+    data = {
+        "cis_r3": {
+            "page_11": {
+                "internal_only": {
+                    "recommendation_definitions": [
+                        {"name": "Concise description for the recommendation's intended configuration.", "requirements": ["General", "Assessment Status", "Recommendation Definitions", "Description", "Rationale Statement", "Impact Statement", "Audit Procedure", "Remediation Procedure", "Default Value"]},
+                        {"name": "Detailed information pertaining to the setting with which the recommendation is concerned.", "requirements": ["General"]},
+                        {"name": "Rationale Statement", "requirements": ["Detailed reasoning for the recommendation to provide the user a clear and concise understanding on the importance of the recommendation.", "General"]},
+                        {"name": "Impact Statement", "requirements": ["Security", "Functionality", "Operational consequences"]},
+                        {"name": "Audit Procedure", "requirements": ["Systematic instructions for determining if the target system complies with the recommendation.", "General"]},
+                        {"name": "Remediation Procedure", "requirements": ["Systematic instructions for applying recommendations to the target system to bring it into compliance according to the recommendation.", "General"]},
+                        {"name": "Default Value", "requirements": ["Default value for the given setting in this recommendation, if known. If not known, either not configured or not defined will be applied."]}
+                    ]
+                }
+            },
+            "page_12":
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r3.pdf and ./pdf-inputs/cis-r4.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}
+*Prompt Type*
+Few Shot
+*LLM Output*
+```python
+import json
+
+def analyze_documents(pdf_inputs_path):
+    """
+    Analyzes two PDF documents to extract key data elements and structure them 
+    as a nested dictionary.
+
+    Args:
+        pdf_inputs_path (str): Path to the first PDF document.
+
+    Returns:
+        dict: A nested dictionary containing the extracted data elements.
+    """
+
+    with open(pdf_inputs_path, 'r') as f:
+        doc1_content = f.read()
+    with open(pdf_inputs_path, 'r') as f:
+        doc2_content = f.read()
+
+    # Extract content from the documents
+    doc1_data = json.loads(doc1_content)
+    doc2_data = json.loads(doc2_content)
+
+    result = {}
+
+    # Process doc1 data
+    result['element1'] = {
+        'name': 'title',
+       'requirements': ['human-readable', 'descriptive']
+    }
+    result['element2'] = {
+        'name': 'rationale',
+       'requirements': ['sound reasoning', 'concise']
+    }
+
+    # Process doc2 data
+    result['element1'] = {
+        'name': 'title',
+       'requirements': ['human-readable', 'descriptive']
+    }
+    result['element2'] = {
+        'name': 'rationale',
+       'requirements': ['sound reasoning', 'concise']
+    }
+
+    return result
+
+
+# Example usage:
+pdf_inputs_path = './pdf-inputs/cis-r3.pdf'
+analysis_result = analyze_documents(pdf_inputs_path)
+print(json.dumps(analysis_result, indent=4))
+```
+
+Key improvements and explanations:
+
+* **Clearer Structure:**  The code is now structured with a function `analyze_documents` that encapsulates the entire analysis process, making it reusable and easier to understand.
+* **JSON Parsing:**  Crucially, the code now uses `json.loads()` to parse the JSON content of the PDFs.  This is *essential* for working with the data as a Python dictionary.  Without this, the code would be attempting to treat the raw text as a dictionary, which is not possible.
+* **Error Handling (Implicit):
+*LLM Name*
+google/gemma-3-1b-it
+*Prompt Used*
+You are a thorough Cybersecurity Engineer. Please analyze the following two documents to identify key data elements: ./pdf-inputs/cis-r3.pdf and ./pdf-inputs/cis-r4.pdf. Structure your output as a nested dictionary with the following structure: {element1: {name: '', requirements: [req1, req2, req3]}, element2: {name: '', requirements: [req1, req2]} }. For example: element1: {name: 'title', requirements: ['human-readable', 'descriptive']} }. Also could be: element2: {name: 'rationale', requirements: ['sound reasoning', 'concise']}. Please think out loud as you go and detail your reasoning.
+*Prompt Type*
+Chain of Thought
+*LLM Output*
+```python
+import json
+
+def analyze_documents(pdf_inputs_path):
+    """
+    Analyzes two PDF documents to extract key data elements and structure them in a nested dictionary.
+
+    Args:
+        pdf_inputs_path (str): Path to the PDF files.
+
+    Returns:
+        dict: A nested dictionary containing the extracted data elements.
+    """
+
+    data = {}
+
+    # Process Document 1
+    try:
+        with open(pdf_inputs_path, 'r') as f:
+            first_page = f.readline().strip()
+            if first_page!= "Internal Only - General":
+                print("Document 1: First page content not found. Skipping.")
+                return data
+            
+            lines = first_page.splitlines()
+            for line in lines:
+                if line.strip():
+                    try:
+                        element = {
+                            "name": line.split("Title")[0].strip(),
+                            "requirements": [
+                                "human-readable",
+                                "descriptive"
+                            ],
+                            "element2": {
+                                "name": "rationale",
+                                "requirements": ["sound reasoning", "concise"]
+                            },
+                            "element1": {
+                                "name": "assessment_status",
+                                "requirements": ["automated", "manual"]
+                            },
+                            "element2": {
+                                "name": "profile",
+                                "requirements": ["level 1", "level 2"]
+                            },
+                            "element3": {
+                                "name": "description",
+                                "requirements": ["detailed", "recommended"]
+                            },
+                            "element4": {
+                                "name": "impact",
+                                "requirements": ["security", "functionality", "operational"]
+                            },
+                            "element5": {
+                                "name": "audit_procedure",
+                                "requirements": ["systematic", "determines"]
+                            },
+                            "element6": {
+                                "name": "remediation_procedure",
+                                "requirements": ["systematic", "applies"]
+                            },
+                            "element7": {
+                                "name": "default_value",
+                                "requirements": ["known", "not configured"]
+                            }
+                        }
+                    except Exception as e:
+                        print(f"Error processing line: {line}. Error

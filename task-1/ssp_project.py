@@ -159,71 +159,53 @@ def key_data_diff(dict1, dict2, output_path):
     return None
 
 # function that compares the two dicts from the yaml and reports on key data requirement differences
-def data_requirements_diff(dict1, dict2, output_path, file1, file2):
+def data_requirements_diff(dict1, dict2, output_path):
     # initialize the sets of names and requirement difference array
     names1 = set()
     names2 = set()
     common_names = set()
-
-    # reset output file
-    with open(output_path, 'w') as file:
-        pass
-
+    req_diff = []
+    
     # iterate through elements of first dict and get the set of names
     for element in dict1:
         names1.add(dict1[element]['name'])
-
+    
     # iterate through elements of second dict and get the set of names
     for element in dict2:
         names2.add(dict2[element]['name'])
-
-    # find kdes in one file but not the other
-    for name in names1:
-        if name not in names2:
-            output = f'{name},ABSENT-IN-{file2},PRESENT-IN-{file1},NA\n'
-            with open(output_path, 'a') as file:
-                file.write(output)
-
-    for name in names2:
-        if name not in names1:
-            output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},NA\n'
-            with open(output_path, 'a') as file:
-                file.write(output)
-
+    
     # get the names that are in both dicts
     common_names = names1.intersection(names2)
-
+    
     # get the differences in requirements
     for name in common_names:
+        # initialize the requirements of each as a set
         req1 = set()
         req2 = set()
+        difference_set = set()
         for element in dict1:
             if name == dict1[element]['name']:
                 req1 = set(dict1[element]['requirements'])
         for element in dict2:
             if name == dict2[element]['name']:
                 req2 = set(dict2[element]['requirements'])
-
-        # find reqs in one file but not the other
-        for req in req1:
-            if req not in req2:
-                output = f'{name},ABSENT-IN-{file2},PRESENT-IN-{file1},{req}\n'
-                with open(output_path, 'a') as file:
-                    file.write(output)
-
-        for req in req2:
-            if req not in req1:
-                output = f'{name},ABSENT-IN-{file1},PRESENT-IN-{file2},{req}\n'
-                with open(output_path, 'a') as file:
-                    file.write(output)
-
-    # if output file is empty, report no differences
-    with open(output_path, 'r') as file:
-        content = file.read()
-    if not content:
-        with open(output_path, 'w') as file:
+        
+        # find differences and add them to overall diff array
+        difference_set = req1.symmetric_difference(req2)
+        for diff in list(difference_set):
+            req_diff.append(tuple([name, diff]))
+    
+    # write to the file
+    with open(output_path, 'w') as file:
+        # only write differences if there are any
+        if len(req_diff) > 0:
+            # write differences
+            for name, req in req_diff:
+                file.write(f'{name}, {req}')
+                file.write('\n')
+        else:
             file.write('NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS')
-
+    
     return None
 
 # function that uses Gemma-3-1B LLM with each prompt type to extract KDEs from two PDFs
@@ -338,145 +320,11 @@ def task_three_input_function(file1, file2):
     # open the first file and turn into set
     with open(file1, 'r') as file:
         content1 = file.read()
-
-
+        
+        
     # open the second file and turn into set
     with open(file2, 'r') as file:
         content2 = file.read()
-
-
+        
+    
     return content1, content2
-
-
-# function that maps differences in content1 (name diff) and content2 (req diff)
-# to Kubescape control IDs using keyword pattern matching
-# writes controls to output_path, or 'NO DIFFERENCES FOUND' if no differences exist
-def identify_kubescape_controls(content1, content2, output_path):
-    no_diff_names = 'NO DIFFERENCES IN REGARDS TO ELEMENT NAMES'
-    no_diff_reqs  = 'NO DIFFERENCES IN REGARDS TO ELEMENT REQUIREMENTS'
-
-    # check if both files report no differences
-    if content1.strip() == no_diff_names and content2.strip() == no_diff_reqs:
-        with open(output_path, 'w') as f:
-            f.write('NO DIFFERENCES FOUND')
-        return []
-
-    # keyword -> Kubescape control IDs mapping
-    control_mapping = {
-        'security':       ['C-0013', 'C-0016', 'C-0035', 'C-0057'],
-        'cloud':          ['C-0041', 'C-0054'],
-        'network':        ['C-0030', 'C-0041', 'C-0054'],
-        'privilege':      ['C-0016', 'C-0057'],
-        'container':      ['C-0009', 'C-0013', 'C-0017'],
-        'secret':         ['C-0002', 'C-0012'],
-        'credential':     ['C-0002', 'C-0012'],
-        'root':           ['C-0013'],
-        'admin':          ['C-0003', 'C-0035'],
-        'permission':     ['C-0003', 'C-0035'],
-        'audit':          ['C-0067', 'C-0070'],
-        'log':            ['C-0067', 'C-0031'],
-        'mount':          ['C-0045', 'C-0048'],
-        'filesystem':     ['C-0017', 'C-0045'],
-        'capability':     ['C-0046', 'C-0056'],
-        'namespace':      ['C-0061'],
-        'service account':['C-0034', 'C-0053'],
-        'ingress':        ['C-0030'],
-        'egress':         ['C-0030'],
-        'host':           ['C-0038', 'C-0041'],
-        'encryption':     ['C-0066'],
-        'image':          ['C-0001'],
-        'cpu':            ['C-0050'],
-        'memory':         ['C-0004'],
-        'access':         ['C-0034', 'C-0035', 'C-0053'],
-        'control plane':  ['C-0067', 'C-0066'],
-        'configuration':  ['C-0012', 'C-0055'],
-        'recommendation': ['C-0009', 'C-0013', 'C-0016'],
-    }
-
-    combined = (content1 + ' ' + content2).lower()
-    found_controls = set()
-
-    for keyword, controls in control_mapping.items():
-        if keyword in combined:
-            found_controls.update(controls)
-
-    # use a default set if no keyword matched
-    if not found_controls:
-        found_controls = {'C-0009', 'C-0013', 'C-0016', 'C-0057'}
-
-    control_list = sorted(found_controls)
-
-    with open(output_path, 'w') as f:
-        f.write('\n'.join(control_list))
-
-    return control_list
-
-
-# function that runs Kubescape on a zip of YAML files based on a controls text file
-# returns a pandas DataFrame with scan results
-def execute_kubescape(controls_file, yamls_zip, output_dir='.'):
-    import subprocess
-    import json
-    import tempfile
-    import zipfile
-    import pandas as pd
-
-    # read the controls file
-    with open(controls_file, 'r') as f:
-        controls_content = f.read().strip()
-
-    # unzip the project yamls to a temp directory
-    temp_dir = tempfile.mkdtemp()
-    with zipfile.ZipFile(yamls_zip, 'r') as zf:
-        zf.extractall(temp_dir)
-
-    results_file = os.path.join(output_dir, 'kubescape-results.json')
-
-    # build the kubescape command
-    if controls_content == 'NO DIFFERENCES FOUND':
-        cmd = ['kubescape', 'scan', temp_dir,
-               '--format', 'json', '--output', results_file]
-    else:
-        control_ids = [line.strip() for line in controls_content.split('\n') if line.strip()]
-        controls_arg = ','.join(control_ids)
-        cmd = ['kubescape', 'scan', 'control', controls_arg, temp_dir,
-               '--format', 'json', '--output', results_file]
-
-    subprocess.run(cmd, check=True, capture_output=True, text=True)
-
-    # parse the JSON output
-    with open(results_file, 'r') as f:
-        results = json.load(f)
-
-    # build one row per control from summaryDetails
-    rows = []
-    controls_summary = results.get('summaryDetails', {}).get('controls', {})
-
-    for ctrl_id, ctrl_data in controls_summary.items():
-        counters = ctrl_data.get('ResourceCounters', {})
-        failed   = counters.get('failedResources', 0)
-        passed   = counters.get('passedResources', 0)
-        skipped  = counters.get('skippedResources', 0)
-        total    = failed + passed + skipped
-        score    = ctrl_data.get('complianceScore', 0)
-
-        rows.append({
-            'FilePath':         yamls_zip,
-            'Severity':         ctrl_data.get('severity', 'Unknown'),
-            'Control name':     ctrl_data.get('name', ctrl_id),
-            'Failed resources': failed,
-            'All Resources':    total,
-            'Compliance score': score,
-        })
-
-    cols = ['FilePath', 'Severity', 'Control name', 'Failed resources', 'All Resources', 'Compliance score']
-    return pd.DataFrame(rows, columns=cols)
-
-
-# function that writes a kubescape scan DataFrame to a CSV file
-# returns the output path
-def generate_csv(dataframe, output_path):
-    import pandas as pd
-    cols = ['FilePath', 'Severity', 'Control name', 'Failed resources', 'All Resources', 'Compliance score']
-    dataframe[cols].to_csv(output_path, index=False)
-    return output_path

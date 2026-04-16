@@ -1,0 +1,15 @@
+element1:
+  name: Security of the Cloud
+  requirements:
+  - AWS is responsible for protecting the infrastructure that runs AWS services in
+    the AWS Cloud.
+  - Amazon EKS, AWS is responsible for the Kubernetes control plane, which includes
+    the control plane nodes and etcd database.
+element2:
+  name: Security in the Cloud
+  requirements:
+  - Your responsibility includes the following areas:
+    - The security configuration of the data plane, including the configuration of
+      the security groups that allow traffic to pass from the Amazon EKS control plane
+      into the customer VPC
+    - The configuration of
