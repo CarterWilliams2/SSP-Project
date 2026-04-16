@@ -24,7 +24,3 @@ pytest test_ssp_project.py -v
 ```bash
 ./ssp_project_binary <file1.pdf> <file2.pdf>
 ```
-Or to run all nine input combinations automatically:
-```bash
-./ssp_project_binary
-```
