@@ -1,0 +1,2 @@
+FilePath,Severity,Control name,Failed resources,All Resources,Compliance score
+project-yamls.zip,Medium,Non-root containers,1,2,50.0
