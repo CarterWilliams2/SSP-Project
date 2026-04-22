@@ -2,22 +2,17 @@ AI Usage Declaration
 SSP-Project - COMP 5700
 Team: Carter Williams, Sathvik Prahadeeswaran
 
+Sathvik:
+
 Throughout this project I used AI as a supplemental tool to help me move faster on
 parts I already understood. The core design decisions, architecture, and logic for
 all three tasks were my own. I planned out the function structures, decided how the
 data should flow between tasks, and wrote the majority of the code myself.
 
-For Task 1, I designed the prompt engineering strategy and wrote the zero-shot,
-few-shot, and chain-of-thought prompt functions on my own. I also set up the input
-validation and the dump_llm_output function independently. Where I used AI was in
-getting the Hugging Face pipeline syntax right for the Gemma model, since I had not
-worked with that specific library before. I also asked AI to help me figure out the
-best pages of the PDF to extract content from so the model would get meaningful
-security content instead of boilerplate pages.
-
-For Task 2, I wrote all three functions myself. The logic for comparing YAML files
-using set operations and symmetric difference was something I worked through on my
-own. AI did not contribute meaningfully to Task 2.
+For Task 1, I used AI in getting the Hugging Face pipeline syntax right for the 
+Gemma model, since I had not worked with that specific library before. I also asked 
+AI to help me figure out the best pages of the PDF to extract content from so the 
+model would get meaningful security content instead of boilerplate pages.
 
 For Task 3, I had a solid understanding of what the functions needed to do but used
 AI to help me understand the Kubescape CLI syntax and the structure of its JSON
@@ -34,3 +29,15 @@ so that the tests would not need to load a 1B parameter model every time they ra
 Overall AI was useful as a reference tool, similar to how I might use documentation
 or Stack Overflow. I drove all the major decisions in this project and used AI to
 fill in gaps in my knowledge of specific libraries and tools.
+
+Carter:
+
+The author would like to acknowledge the use of Claude, a language model developed by 
+Anthropic, in the preparation of this assignment. The tools were used in the following way(s) 
+in this assignment: 
+    1. In Task 1, I prompted the LLM to see what it's output would be. I used that output to 
+       get an idea of what examples to add for few-shot and chain-of-thought prompts.
+    2. In Task 4, it helped me debug an error I was running into with the python version in
+       my virtual environment as well as the virtual environment for the GitHub actions workflow.
+    3. In Task 4, it helped me figure out how to retrieve the binary from git-lfs so that I 
+       could run it on my machine.
