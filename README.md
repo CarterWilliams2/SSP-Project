@@ -1,14 +1,18 @@
 # SSP-Project
+
 COMP 5700 Secure Software Project
 
 ## Team Members
-| Carter Williams | cjw0113@auburn.edu | 904246901 
-| Sathvik Prahadeeswaran | srp0061@auburn.edu | 904226136
+
+| Carter Williams | `cjw0113@auburn.edu` | 904246901
+| Sathvik Prahadeeswaran | `srp0061@auburn.edu` | 904226136
 
 ## LLM Used (Task 1)
+
 **google/gemma-3-1b-it** via Hugging Face Transformers
 
 ## Setup
+
 ```bash
 python -m venv venv
 source venv/bin/activate
@@ -16,11 +20,13 @@ pip install -r requirements.txt
 ```
 
 ## Running Tests
+
 ```bash
 pytest test_ssp_project.py -v
 ```
 
 ## Running the Binary
+
 Please ensure you have git-lfs and kubescape tools installed.
 git-lfs: [download instructions](https://git-lfs.com)
 kubescape: [download instructions](https://kubescape.io/docs/install-cli/)
@@ -32,3 +38,11 @@ git lfs pull
 ```
 
 Note: `project-yamls.zip` must be in the same directory as the binary for the Kubescape scan (Task 3) to run.
+
+## Deliverables
+
+More information about all deliverables available in `DELIVERABLES.md`
+
+## AI Usage Declartion
+
+AI Usage Declaration found in `AI_USAGE_DECLARATION.txt`
