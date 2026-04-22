@@ -1,7 +1,0 @@
-element1:
-  name: Control Plane Logging
-  requirements:
-  - Enabled
-  - Enabled
-  - Enabled
-  - Enabled
