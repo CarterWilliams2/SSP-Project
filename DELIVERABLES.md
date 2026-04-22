@@ -35,6 +35,9 @@
 
 1. Public GitHub repo: [Repo Link](https://github.com/CarterWilliams2/SSP-Project)
 2. GitHub Action file: [Check Actions tab to see all attempted pushes with test execution](https://github.com/CarterWilliams2/SSP-Project/actions)
-3. Binary: `./dist/ssp_project/binary`
-    Note: python source code for this in `main.py`; instructions in `README.md` on how to run
-4. Requirement file: `requirements.txt`
+    a. Make a branch on our project
+    b. Add a line to the `dummy-file.txt`
+    c. Commit and push to see tests running
+4. Binary: `./dist/ssp_project/binary`
+    a. Note: python source code for this in `main.py`; instructions in `README.md` on how to run
+5. Requirement file: `requirements.txt`
