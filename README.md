@@ -39,6 +39,12 @@ git lfs pull
 
 Note: `project-yamls.zip` must be in the same directory as the binary for the Kubescape scan (Task 3) to run.
 
+Alternatively, you can build the binary yourself after activating your virtual environment and installing requirements.
+
+```bash
+pyinstaller --onefile main.py -n ssp_project_binary
+```
+
 ## Deliverables
 
 More information about all deliverables available in `DELIVERABLES.md`
