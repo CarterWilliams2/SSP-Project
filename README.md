@@ -21,7 +21,14 @@ pytest test_ssp_project.py -v
 ```
 
 ## Running the Binary
+Please ensure you have git-lfs and kubescape tools installed.
+git-lfs: [download instructions](https://git-lfs.com)
+kubescape: [download instructions](https://kubescape.io/docs/install-cli/)
+
 ```bash
+git lfs install
+git lfs pull
 ./ssp_project_binary <file1.pdf> <file2.pdf>
 ```
+
 Note: `project-yamls.zip` must be in the same directory as the binary for the Kubescape scan (Task 3) to run.
